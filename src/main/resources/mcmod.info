@@ -1,0 +1,19 @@
+[
+{
+"modid": "mineplexutils",
+"name": "§6§lMineplexUtils",
+"description": "Moderation tools for Mineplex Staff!",
+"version": "§6BETA§r",
+"credits": "Created by JerBearJerBear",
+"logoFile": "mineplex-logo.png",
+"mcversion": "1.8",
+"url": "http://www.mineplex.com",
+"updateUrl": "",
+"authors": [ "Graphic" ],
+"parent":"",
+"screenshots": [],
+"dependencies": [
+"mod_MinecraftForge"
+]
+}
+]
