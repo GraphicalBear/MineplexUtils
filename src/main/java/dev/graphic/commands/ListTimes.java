@@ -18,9 +18,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 
 public class ListTimes implements ICommand {
-	
+
 	private static int counter = 0;
-	
+
 	@Override
 	public int compareTo(Object o) {
 		return 0;
@@ -44,15 +44,14 @@ public class ListTimes implements ICommand {
 	}
 
 	@Override
-	public void execute(ICommandSender sender, String[] args)
-			throws CommandException {
+	public void execute(ICommandSender sender, String[] args) throws CommandException {
 		String tempName = Minecraft.getMinecraft().thePlayer.getName().toLowerCase();
-	
+
 		if (StateStore.loginCode.equals(LoginCode.MODCOORD) && !NameStore.getCoordList().has(tempName)) {
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "You have no entry in the database").send();
 			return;
 		}
-		
+
 		if (StateStore.executing == false) {
 			if (StateStore.locate)
 				Locator.getLocator().stopLocation();
@@ -61,9 +60,9 @@ public class ListTimes implements ICommand {
 			StateStore.timeTimer = new Timer();
 			StateStore.timeTimer.scheduleAtFixedRate(new CounterTask(), 500, 2500);
 		} else {
-			
+
 		}
-		
+
 	}
 
 	@Override
@@ -74,8 +73,7 @@ public class ListTimes implements ICommand {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args,
-			BlockPos pos) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		return null;
 	}
 
@@ -83,12 +81,12 @@ public class ListTimes implements ICommand {
 	public boolean isUsernameIndex(String[] args, int index) {
 		return false;
 	}
-	
+
 	private class CounterTask extends TimerTask {
 		@Override
-		public void run () {
+		public void run() {
 			String name = "";
-			
+
 			if (StateStore.loginCode.equals(LoginCode.APPS)) {
 				name = NameStore.getAppsList().get(counter);
 				counter++;
@@ -140,11 +138,9 @@ public class ListTimes implements ICommand {
 						Locator.getLocator().startLocation();
 				}
 			}
-			
+
 			Minecraft.getMinecraft().thePlayer.sendChatMessage("/time " + name);
 		}
 	}
-	
-	
 
 }

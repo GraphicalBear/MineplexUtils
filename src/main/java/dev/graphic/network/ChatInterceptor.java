@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import dev.graphic.store.NameStore;
 import dev.graphic.store.StateStore;
 import dev.graphic.store.StateStore.LoginCode;
+import dev.graphic.utils.Alerts;
 import dev.graphic.utils.Chatter;
 import dev.graphic.utils.Chatter.S;
 import net.minecraft.client.Minecraft;
@@ -22,13 +23,10 @@ public class ChatInterceptor {
 	@SubscribeEvent
 	public void chatEvent(ClientChatReceivedEvent event) throws Exception {
 
-		if (event.message instanceof ChatComponentTranslation
-				|| event.message instanceof ChatComponentText) {
+		if (event.message instanceof ChatComponentTranslation || event.message instanceof ChatComponentText) {
 			String unformat = event.message.getUnformattedText();
 			while (unformat.contains("§")) {
-				unformat = unformat.substring(0, unformat.indexOf("§"))
-						+ unformat.substring(unformat.indexOf("§") + 2,
-								unformat.length());
+				unformat = unformat.substring(0, unformat.indexOf("§")) + unformat.substring(unformat.indexOf("§") + 2, unformat.length());
 			}
 			if (unformat.contains("Locate>") && StateStore.locate) {
 
@@ -36,11 +34,11 @@ public class ChatInterceptor {
 					event.setCanceled(true);
 					return;
 				}
+				
+				Alerts.alert();
 
-				String name = unformat.substring(unformat.indexOf("[") + 1,
-						unformat.indexOf("]", unformat.indexOf("[") + 1));
-				String server = unformat.substring(unformat.lastIndexOf(" "),
-						unformat.length());
+				String name = unformat.substring(unformat.indexOf("[") + 1, unformat.indexOf("]", unformat.indexOf("[") + 1));
+				String server = unformat.substring(unformat.lastIndexOf(" "), unformat.length());
 				if (server.toLowerCase().contains("server")) {
 					server = "THIS!";
 				}
@@ -61,9 +59,7 @@ public class ChatInterceptor {
 						}
 					}
 
-					new Chatter(StateStore.sender).add(pref).add().add(name)
-							.add().add(S.AQUA).add(S.BOLD, "is in server ")
-							.add(S.YELLOW).add(S.BOLD, server.trim()).send();
+					new Chatter(StateStore.sender).add(pref).add().add(name).add().add(S.AQUA).add(S.BOLD, "is in server ").add(S.YELLOW).add(S.BOLD, server.trim()).send();
 					event.setCanceled(true);
 
 				} else if (StateStore.loginCode.equals(LoginCode.APPS)) {
@@ -71,30 +67,16 @@ public class ChatInterceptor {
 					for (String item : NameStore.getAppsList()) {
 						System.out.println(">" + item + "<>" + name + "<");
 						if (item.trim().equalsIgnoreCase(name.trim())) {
-							new Chatter(StateStore.sender).add(S.YELLOW)
-									.add(S.BOLD, name).add().add(S.AQUA)
-									.add(S.BOLD, "is in server ").add(S.YELLOW)
-									.add(S.BOLD, server.trim()).send();
+							new Chatter(StateStore.sender).add(S.YELLOW).add(S.BOLD, name).add().add(S.AQUA).add(S.BOLD, "is in server ").add(S.YELLOW).add(S.BOLD, server.trim()).send();
 							event.setCanceled(true);
 							break;
 						}
 					}
 				} else if (StateStore.loginCode.equals(LoginCode.MODCOORD)) {
-					if (NameStore.getCoordList().has(
-							Minecraft.getMinecraft().thePlayer.getName()
-									.toLowerCase())) {
-						for (JsonElement item : NameStore
-								.getCoordList()
-								.get(Minecraft.getMinecraft().thePlayer
-										.getName().toLowerCase())
-								.getAsJsonArray()) {
-							if (name.trim().equalsIgnoreCase(
-									item.getAsString().trim())) {
-								new Chatter(StateStore.sender).add(S.YELLOW)
-										.add(S.BOLD, name).add().add(S.AQUA)
-										.add(S.BOLD, "is in server ")
-										.add(S.YELLOW)
-										.add(S.BOLD, server.trim()).send();
+					if (NameStore.getCoordList().has(Minecraft.getMinecraft().thePlayer.getName().toLowerCase())) {
+						for (JsonElement item : NameStore.getCoordList().get(Minecraft.getMinecraft().thePlayer.getName().toLowerCase()).getAsJsonArray()) {
+							if (name.trim().equalsIgnoreCase(item.getAsString().trim())) {
+								new Chatter(StateStore.sender).add(S.YELLOW).add(S.BOLD, name).add().add(S.AQUA).add(S.BOLD, "is in server ").add(S.YELLOW).add(S.BOLD, server.trim()).send();
 								event.setCanceled(true);
 								break;
 							}
@@ -102,10 +84,7 @@ public class ChatInterceptor {
 					}
 
 				} else {
-					new Chatter(StateStore.sender).add(S.YELLOW)
-							.add(S.BOLD, name).add().add(S.AQUA)
-							.add(S.BOLD, "is in server ").add(S.YELLOW)
-							.add(S.BOLD, server.trim()).send();
+					new Chatter(StateStore.sender).add(S.YELLOW).add(S.BOLD, name).add().add(S.AQUA).add(S.BOLD, "is in server ").add(S.YELLOW).add(S.BOLD, server.trim()).send();
 					event.setCanceled(true);
 				}
 
@@ -118,16 +97,26 @@ public class ChatInterceptor {
 
 			String message = event.message.getFormattedText();
 
-			if (message.length() < 30)
+			if (!message.contains("§e"))
 				return;
+
+			int index = message.indexOf("§e");
+			index = message.indexOf(" ", index);
+			String pre = message.substring(0, index).trim();
+			String pos = message.substring(index, message.length()).trim();
+			String keyword = pos.substring(0, pos.indexOf(" "));
+			if (keyword.startsWith("§"))
+				keyword = keyword.substring(2, keyword.length());
+			message = event.message.getUnformattedText();
+			message = message.substring(message.indexOf(keyword), message.length());
+			String toTranslate = new String(message);
+			String toPrefix = new String(pre);
 
 			Thread thread = new Thread() {
 				@Override
 				public void run() {
 					try {
-						new Chatter(StateStore.sender).add(S.WHITE,
-								" " + TranslateConnection.translate(message))
-								.send();
+						new Chatter(StateStore.sender).add(toPrefix).add().add(S.WHITE).add(TranslateConnection.translate(toTranslate)).sendRaw();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

@@ -41,9 +41,8 @@ public class Logout implements ICommand {
 	}
 
 	@Override
-	public void execute(ICommandSender sender, String[] args)
-			throws CommandException {
-		
+	public void execute(ICommandSender sender, String[] args) throws CommandException {
+
 		if (StateStore.loginCode.equals(LoginCode.NONE)) {
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "You are not logged in").send();
 			return;
@@ -57,8 +56,7 @@ public class Logout implements ICommand {
 				Locator.getLocator().stopLocation();
 			StateStore.locate = false;
 		}
-		
-		
+
 	}
 
 	@Override
@@ -67,8 +65,7 @@ public class Logout implements ICommand {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args,
-			BlockPos pos) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		return null;
 	}
 

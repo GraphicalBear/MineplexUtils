@@ -42,9 +42,8 @@ public class EnableLocator implements ICommand {
 	}
 
 	@Override
-	public void execute(ICommandSender sender, String[] args)
-			throws CommandException {
-		
+	public void execute(ICommandSender sender, String[] args) throws CommandException {
+
 		if (StateStore.locate == true)
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "Passive player location already enabled").send();
 		else {
@@ -60,7 +59,6 @@ public class EnableLocator implements ICommand {
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "Passive player location is now enabled").send();
 		}
 
-		
 	}
 
 	@Override
@@ -71,8 +69,7 @@ public class EnableLocator implements ICommand {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args,
-			BlockPos pos) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		return null;
 	}
 

@@ -14,7 +14,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
-//EnableTranslation is Currently un-used, and is in the works
 
 public class EnableTranslation implements ICommand {
 
@@ -41,8 +40,7 @@ public class EnableTranslation implements ICommand {
 	}
 
 	@Override
-	public void execute(ICommandSender sender, String[] args)
-			throws CommandException {
+	public void execute(ICommandSender sender, String[] args) throws CommandException {
 		if (StateStore.translate == true)
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "Passive translation already enabled").send();
 		else {
@@ -59,8 +57,7 @@ public class EnableTranslation implements ICommand {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args,
-			BlockPos pos) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		return null;
 	}
 

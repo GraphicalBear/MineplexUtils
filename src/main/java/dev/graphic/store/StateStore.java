@@ -11,6 +11,7 @@ import java.util.Timer;
 
 import org.apache.commons.io.IOUtils;
 
+import dev.graphic.utils.HTTP;
 import net.minecraft.command.ICommandSender;
 
 public class StateStore {
@@ -26,14 +27,14 @@ public class StateStore {
 	public static Timer timeTimer;
 	public static boolean failed = false;
 
-	static {
+	public static void loadPasswords() {
 
 		streamsPassword = HTTP.getPassword("[public repository, redacted]");
 		appsPassword = HTTP.getPassword("[public repository, redacted]");
 		coordPassword = HTTP.getPassword("[public repository, redacted]");
-		
+
 	}
-	
+
 	public static enum LoginCode {
 		STREAMS, MODCOORD, APPS, NONE;
 	}

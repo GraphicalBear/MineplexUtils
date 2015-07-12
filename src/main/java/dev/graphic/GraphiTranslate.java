@@ -19,6 +19,7 @@ import dev.graphic.commands.Translate;
 import dev.graphic.network.ChatInterceptor;
 import dev.graphic.network.Locator;
 import dev.graphic.network.TranslateConnection;
+import dev.graphic.store.StateStore;
 import net.minecraft.util.StringTranslate;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,20 +51,20 @@ public class GraphiTranslate {
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		MinecraftForge.EVENT_BUS.register(new ChatInterceptor());
 		TranslateConnection.captureLanguages();
-		
+		StateStore.loadPasswords();
+
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
 		Locator locator = new Locator();
 		FMLCommonHandler.instance().bus().register(instance);
-		
+
 	}
 
 	@EventHandler
-	public void test(FMLPostInitializationEvent e) throws InterruptedException,
-			ExecutionException {
-		
+	public void test(FMLPostInitializationEvent e) throws InterruptedException, ExecutionException {
+
 		ClientCommandHandler.instance.registerCommand(new Login());
 		ClientCommandHandler.instance.registerCommand(new Translate());
 		ClientCommandHandler.instance.registerCommand(new EnableLocator());
@@ -72,6 +73,8 @@ public class GraphiTranslate {
 		ClientCommandHandler.instance.registerCommand(new MineplexUtils());
 		ClientCommandHandler.instance.registerCommand(new Logout());
 		ClientCommandHandler.instance.registerCommand(new ListPlayers());
+		ClientCommandHandler.instance.registerCommand(new EnableTranslation());
+		ClientCommandHandler.instance.registerCommand(new DisableTranslation());
 
 	}
 

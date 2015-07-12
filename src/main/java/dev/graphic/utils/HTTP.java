@@ -2,19 +2,24 @@ package dev.graphic.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+
+import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class HTTP {
 
-	//Note: User agents are required to prevent apache server from returning a 403 
-	
+	// Note: User agents are required to prevent apache server from returning a
+	// 403
+
 	public static ArrayList<String> getList(String url) {
 		ArrayList<String> builder = new ArrayList<String>();
 		try {
@@ -26,8 +31,7 @@ public class HTTP {
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestMethod("GET");
-			
-			
+
 			int HttpResult = connection.getResponseCode();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
@@ -54,7 +58,7 @@ public class HTTP {
 
 		return builder;
 	}
-	
+
 	public static JsonObject getJsonObjectWithObjectsWithArray(String url) {
 		JsonObject response = null;
 		try {
@@ -66,7 +70,7 @@ public class HTTP {
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestMethod("GET");
-		
+
 			StringBuilder builder = new StringBuilder();
 			int HttpResult = connection.getResponseCode();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
@@ -77,7 +81,7 @@ public class HTTP {
 				}
 
 				reader.close();
-		
+
 				response = new JsonParser().parse(builder.toString().toLowerCase()).getAsJsonObject();
 
 				System.out.println("GOOD RESPONSE)" + builder.toString());
@@ -97,7 +101,7 @@ public class HTTP {
 		return response;
 	}
 
-	public static string getPassword(String urlString) {
+	public static String getPassword(String urlString) {
 		HttpURLConnection httpcon;
 		String tempStore = "";
 		try {
@@ -107,7 +111,7 @@ public class HTTP {
 			InputStream input = httpcon.getInputStream();
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(input, writer, "utf-8");
-			String theString = writer.toString(); 
+			String theString = writer.toString();
 			if (theString.length() > 2)
 				tempStore = theString;
 			httpcon.disconnect();

@@ -11,23 +11,23 @@ import dev.graphic.store.StateStore.LoginCode;
 import net.minecraft.client.Minecraft;
 
 public class Locator {
-	
+
 	private int counter = 0;
 	private static Locator locator;
 	private Timer timer;
 	private static boolean coordLoad = true;
 	private JsonArray coordSave;
-	
-	public Locator () {
+
+	public Locator() {
 		locator = this;
-		
+
 	}
-	
+
 	public static Locator getLocator() {
 		return locator;
 	}
 
-	public void startLocation ( ) {
+	public void startLocation() {
 		timer = new Timer();
 		if (StateStore.loginCode.equals(LoginCode.APPS))
 			timer.scheduleAtFixedRate(new AppsCounterTask(), 1000, 6000);
@@ -36,18 +36,18 @@ public class Locator {
 		if (StateStore.loginCode.equals(LoginCode.STREAMS))
 			timer.scheduleAtFixedRate(new StreamsCounterTask(), 1000, 6000);
 	}
-	
-	public void stopLocation ( ) {
+
+	public void stopLocation() {
 		timer.cancel();
 		timer.purge();
 		counter = 0;
 	}
-	
+
 	private class StreamsCounterTask extends TimerTask {
-		
+
 		@Override
-		public void run ( ) {
-			
+		public void run() {
+
 			String name = "";
 			if (counter < NameStore.getYouTubers().size()) {
 				name = NameStore.getYouTubers().get(counter);
@@ -64,12 +64,12 @@ public class Locator {
 			}
 		}
 	}
-	
+
 	private class AppsCounterTask extends TimerTask {
-		
+
 		@Override
-		public void run ( ) {
-	
+		public void run() {
+
 			String name = NameStore.getAppsList().get(counter);
 			Minecraft.getMinecraft().thePlayer.sendChatMessage("/locate " + name);
 			counter++;
@@ -77,18 +77,18 @@ public class Locator {
 				counter = 0;
 		}
 	}
-	
+
 	private class CoordCounterTask extends TimerTask {
-		
+
 		@Override
-		public void run ( ) {
-			
+		public void run() {
+
 			if (coordLoad) {
 				String user_name = Minecraft.getMinecraft().thePlayer.getName().toLowerCase();
 				coordSave = NameStore.getCoordList().getAsJsonObject().get(user_name).getAsJsonArray();
 				coordLoad = false;
 			}
-			
+
 			String name = coordSave.get(counter).getAsString();
 			Minecraft.getMinecraft().thePlayer.sendChatMessage("/locate " + name);
 			counter++;
@@ -96,7 +96,7 @@ public class Locator {
 				counter = 0;
 		}
 	}
-	
+
 	private void testCount() {
 		counter++;
 		int fullcount = NameStore.getStreamers().size() + NameStore.getYouTubers().size();

@@ -40,19 +40,18 @@ public class Login implements ICommand {
 	}
 
 	@Override
-	public void execute(ICommandSender sender, String[] args)
-			throws CommandException {
+	public void execute(ICommandSender sender, String[] args) throws CommandException {
 
 		if (!StateStore.loginCode.equals(LoginCode.NONE)) {
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "Already logged in").send();
 			return;
 		}
-		
+
 		if (args.length == 0) {
 			new Chatter(sender).add(S.AQUA).add(S.BOLD, "Please supply a password").send();
 			return;
 		}
-		
+
 		if (StateStore.loginCode.equals(LoginCode.NONE)) {
 			StateStore.sender = sender;
 			if (args[0].equals(StateStore.streamsPassword)) {
@@ -79,8 +78,7 @@ public class Login implements ICommand {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args,
-			BlockPos pos) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 		return null;
 	}
 
