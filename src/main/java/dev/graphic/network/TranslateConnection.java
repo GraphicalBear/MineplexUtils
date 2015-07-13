@@ -66,7 +66,7 @@ public abstract class TranslateConnection {
 	private static final String transReq = "translate?key=";
 	private static final String detReq = "detect?key=";
 	private static final String lngReq = "getLangs?key=";
-	private static final String authKey = "trnsl.1.1.20150712T221844Z.5db6a8fe563ed788.45e45200e053a2d9b44e4567935f7ccbc7109f8f";
+	private static final String authKey = "[public repository, redacted";
 	private static final String lang = "&lang=";
 	private static final String text = "&text=";
 	private static final String lngDisp = "&ui=";
